@@ -2,7 +2,6 @@ import React from 'react';
 import { useState } from 'react';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { FeedbackWidgetContext } from '../context';
 import { StyleSheet } from 'react-native';
 
@@ -18,9 +17,7 @@ export const FeedbackWidgetProvider = ({
   return (
     <FeedbackWidgetContext.Provider value={{ isOpen, setOpen }}>
       <GestureHandlerRootView style={styles.container}>
-        <SafeAreaProvider>
-          <BottomSheetModalProvider>{children}</BottomSheetModalProvider>
-        </SafeAreaProvider>
+        <BottomSheetModalProvider>{children}</BottomSheetModalProvider>
       </GestureHandlerRootView>
     </FeedbackWidgetContext.Provider>
   );

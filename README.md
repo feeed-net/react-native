@@ -8,19 +8,23 @@ A package
 npm install @feeed/react-native
 ```
 
+```sh
+yarn install @feeed/react-native
+```
+
 ## Usage
 
 ```js
-import { multiply } from '@feeed/react-native';
+<SafeAreaProvider>
+  <FeedbackWidgetProvider>
+    // Your app content
+    <FeedbackWidget projectId="[projectId]" />
+  </FeedbackWidgetProvider>
+</SafeAreaProvider>;
 
-// ...
-
-const result = await multiply(3, 7);
+//open the widget from anywhere in your app
+const { open } = useFeedback();
 ```
-
-## Contributing
-
-See the [contributing guide](CONTRIBUTING.md) to learn how to contribute to the repository and the development workflow.
 
 ## License
 

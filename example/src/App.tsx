@@ -6,12 +6,15 @@ import {
   FeedbackWidget,
   useFeedback,
 } from '@feeed/react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 export default function App() {
   return (
     <FeedbackWidgetProvider>
-      <AppContent />
-      <FeedbackWidget projectId="jonas" />
+      <SafeAreaProvider>
+        <AppContent />
+        <FeedbackWidget projectId="jonas" />
+      </SafeAreaProvider>
     </FeedbackWidgetProvider>
   );
 }
