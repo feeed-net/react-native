@@ -1,22 +1,31 @@
 import * as React from 'react';
 
-import { StyleSheet, View, Text } from 'react-native';
-import { multiply } from '@feeed/react-native';
+import { StyleSheet, View, TouchableHighlight, Text } from 'react-native';
+import {
+  FeedbackWidgetProvider,
+  FeedbackWidget,
+  useFeedback,
+} from '@feeed/react-native';
 
 export default function App() {
-  const [result, setResult] = React.useState<number | undefined>();
-
-  React.useEffect(() => {
-    multiply(3, 7).then(setResult);
-  }, []);
-
   return (
-    <View style={styles.container}>
-      <Text>Result: {result}</Text>
-    </View>
+    <FeedbackWidgetProvider>
+      <AppContent />
+      <FeedbackWidget projectId="jonas" />
+    </FeedbackWidgetProvider>
   );
 }
 
+const AppContent = () => {
+  const { open } = useFeedback();
+  return (
+    <View style={styles.container}>
+      <TouchableHighlight onPress={open}>
+        <Text>Open Feedback Widget</Text>
+      </TouchableHighlight>
+    </View>
+  );
+};
 const styles = StyleSheet.create({
   container: {
     flex: 1,
