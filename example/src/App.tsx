@@ -13,7 +13,7 @@ export default function App() {
     <SafeAreaProvider>
       <FeedbackWidgetProvider>
         <AppContent />
-        <FeedbackWidget projectId="jonas" />
+        <FeedbackWidget projectId="JGGHcdanxJNq" />
       </FeedbackWidgetProvider>
     </SafeAreaProvider>
   );

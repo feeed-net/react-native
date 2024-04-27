@@ -1,6 +1,12 @@
 import React, { useContext } from 'react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Keyboard,
+} from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import {
   BottomSheetBackdrop,
@@ -40,11 +46,25 @@ const FeedbackWidget = ({
     [safeAreaInsets]
   );
   const { isOpen, setOpen } = useContext(FeedbackWidgetContext);
+  const [isKeyboardMoving, setIsKeyboardMoving] = useState(false);
   const [currentStep, setCurrentStep] = useState<FeedbackWidgetStep>('main');
   const [, setCurrentCategory] = useState<FeedbackCategory>('');
   const [currentText, setCurrentText] = useState('');
   const inputRef = useRef(null);
+  useEffect(() => {
+    const showSubscription = Keyboard.addListener('keyboardWillShow', () => {
+      setIsKeyboardMoving(true);
+    });
 
+    const hideSubscription = Keyboard.addListener('keyboardDidHide', () => {
+      setIsKeyboardMoving(false);
+    });
+
+    return () => {
+      showSubscription.remove();
+      hideSubscription.remove();
+    };
+  }, []);
   useEffect(() => {
     if (isOpen) {
       ref.current?.present();
@@ -56,23 +76,21 @@ const FeedbackWidget = ({
   }, [isOpen, onOpen, onClose]);
 
   const onCloseCallback = useCallback(() => {
-    if (currentStep === 'main' || currentStep === 'success') {
-      setOpen(false);
-      setTimeout(() => {
-        setCurrentStep('main');
-        setCurrentCategory('');
-        setCurrentText('');
-      }, 300);
-    } else {
+    setOpen(false);
+    setTimeout(() => {
       setCurrentStep('main');
+      setCurrentCategory('');
+      setCurrentText('');
+    }, 500);
+  }, [setOpen]);
+
+  const onClickOutside = useCallback(() => {
+    if (isKeyboardMoving) {
+      Keyboard.dismiss();
+    } else {
+      onCloseCallback();
     }
-  }, [
-    setOpen,
-    currentStep,
-    setCurrentStep,
-    setCurrentCategory,
-    setCurrentText,
-  ]);
+  }, [isKeyboardMoving, onCloseCallback]);
 
   const onSelectCategoryCallback = useCallback(
     (category: FeedbackCategory) => {
@@ -99,18 +117,18 @@ const FeedbackWidget = ({
     }
   }, [projectId, currentText]);
 
-  const entering: any = useCallback((targetValues: any) => {
+  const entering: any = useCallback(() => {
     'worklet';
     const animations = {
-      opacity: withTiming(targetValues.targetOriginY, { duration: 200 }),
+      opacity: withTiming(1, { duration: 50 }),
       transform: [
-        { translateY: withTiming(0, { duration: 200 }) },
-        { scale: withTiming(1, { duration: 200 }) },
+        { translateY: withTiming(0, { duration: 300 }) },
+        { scale: withTiming(1, { duration: 300 }) },
       ],
     };
     const initialValues = {
       opacity: 0,
-      transform: [{ translateY: 5 }, { scale: 0.99 }],
+      transform: [{ translateY: 5 }, { scale: 0.985 }],
     };
     return {
       initialValues,
@@ -118,10 +136,27 @@ const FeedbackWidget = ({
     };
   }, []);
 
+  const BackDrop = useCallback(
+    (props: BottomSheetBackdropProps) => (
+      <BottomSheetBackdrop
+        {...props}
+        onPress={() => {
+          onClickOutside();
+        }}
+        disappearsOnIndex={-1}
+        appearsOnIndex={0}
+        opacity={0.3}
+      />
+    ),
+    [onClickOutside]
+  );
   return (
     <BottomSheetModal
       ref={ref}
       onDismiss={onCloseCallback}
+      keyboardBehavior="interactive"
+      keyboardBlurBehavior="restore"
+      android_keyboardInputMode="adjustPan"
       backdropComponent={BackDrop}
       bottomInset={safeBottomInset}
       contentHeight={300}
@@ -131,7 +166,7 @@ const FeedbackWidget = ({
       style={styles.modal}
       backgroundStyle={styles.background}
     >
-      <BottomSheetView style={styles.container}>
+      <BottomSheetView style={[styles.container]}>
         <WidgetHeader
           title={title}
           currentStep={currentStep}
@@ -160,15 +195,6 @@ const FeedbackWidget = ({
     </BottomSheetModal>
   );
 };
-
-const BackDrop = (props: BottomSheetBackdropProps) => (
-  <BottomSheetBackdrop
-    {...props}
-    disappearsOnIndex={-1}
-    appearsOnIndex={0}
-    opacity={0.3}
-  />
-);
 
 type CategoryListProps = {
   onSelectCategory: (category: FeedbackCategory) => void;
@@ -234,6 +260,7 @@ const FeedbackForm = ({
         ref={inputRef}
         multiline
         editable
+        onSubmitEditing={Keyboard.dismiss}
         maxLength={500}
         placeholder="Write your feedback here"
         style={styles.textInput}
@@ -298,7 +325,7 @@ const styles = StyleSheet.create({
     color: '#71717A',
     fontWeight: '500',
   },
-  textInput: { color: '#27272A' },
+  textInput: { color: '#27272A', flex: 1, fontSize: 16 },
   submitButton: {
     backgroundColor: '#27272A',
     borderRadius: 10,
