@@ -10,12 +10,12 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 export default function App() {
   return (
-    <FeedbackWidgetProvider>
-      <SafeAreaProvider>
+    <SafeAreaProvider>
+      <FeedbackWidgetProvider>
         <AppContent />
         <FeedbackWidget projectId="jonas" />
-      </SafeAreaProvider>
-    </FeedbackWidgetProvider>
+      </FeedbackWidgetProvider>
+    </SafeAreaProvider>
   );
 }
 
