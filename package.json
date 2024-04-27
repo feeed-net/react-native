@@ -1,6 +1,6 @@
 {
   "name": "@feeed/react-native",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "A package",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
