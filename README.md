@@ -4,12 +4,16 @@ A package
 
 ## Installation
 
-```sh
-npm install @feeed/react-native
-```
+1. Install the package:
 
 ```sh
 yarn install @feeed/react-native
+```
+
+2. Install the dependencies:
+
+```sh
+yarn add react-native-gesture-handler react-native-reanimated react-native-safe-area-context
 ```
 
 ## Usage
@@ -17,7 +21,7 @@ yarn install @feeed/react-native
 ```js
 <SafeAreaProvider>
   <FeedbackWidgetProvider>
-    // Your app content
+    /* Your app content */
     <FeedbackWidget projectId="[projectId]" />
   </FeedbackWidgetProvider>
 </SafeAreaProvider>;
