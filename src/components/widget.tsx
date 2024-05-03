@@ -18,11 +18,12 @@ import {
 
 import Animated, { withTiming } from 'react-native-reanimated';
 import type { FeedbackCategory, FeedbackWidgetStep } from '../core/types';
-import { submitFeedback } from '../core/client';
 import WidgetHeader from './widget-header';
 import { FeedbackWidgetContext } from '../context';
 import BugIcon from './icons/bug-icon';
 import MessageIcon from './icons/message-icon';
+import { useFeedbackSubmit } from '../hooks/useSubmitFeedback';
+import { getDeviceInfo } from '../core/device';
 
 type FeedbackWidgetProps = {
   onSelectCategory?: (category: FeedbackCategory) => void;
@@ -41,6 +42,7 @@ const FeedbackWidget = ({
 }: FeedbackWidgetProps) => {
   const ref = useRef<any>(null);
   const safeAreaInsets = useSafeAreaInsets();
+  const { submitFeedback, loading: submitLoading } = useFeedbackSubmit();
   const safeBottomInset = useMemo(
     () => safeAreaInsets.bottom + 8,
     [safeAreaInsets]
@@ -48,9 +50,10 @@ const FeedbackWidget = ({
   const { isOpen, setOpen } = useContext(FeedbackWidgetContext);
   const [isKeyboardMoving, setIsKeyboardMoving] = useState(false);
   const [currentStep, setCurrentStep] = useState<FeedbackWidgetStep>('main');
-  const [, setCurrentCategory] = useState<FeedbackCategory>('');
+  const [currentCategory, setCurrentCategory] = useState<FeedbackCategory>('');
   const [currentText, setCurrentText] = useState('');
   const inputRef = useRef(null);
+
   useEffect(() => {
     const showSubscription = Keyboard.addListener('keyboardWillShow', () => {
       setIsKeyboardMoving(true);
@@ -100,7 +103,6 @@ const FeedbackWidget = ({
     },
     [onSelectCategory]
   );
-
   const onChangeTextCallback = useCallback((text: string) => {
     setCurrentText(text);
   }, []);
@@ -110,12 +112,18 @@ const FeedbackWidget = ({
       return;
     }
     try {
-      await submitFeedback(projectId, currentText);
+      console.log('Submitting feedback', await getDeviceInfo());
+      await submitFeedback({
+        projectId,
+        category: currentCategory,
+        content: currentText,
+        metadata: await getDeviceInfo(),
+      });
       setCurrentStep('success');
     } catch (error) {
       console.error(error);
     }
-  }, [projectId, currentText]);
+  }, [projectId, currentText, currentCategory, submitFeedback]);
 
   const entering: any = useCallback(() => {
     'worklet';
@@ -182,6 +190,7 @@ const FeedbackWidget = ({
             <FeedbackForm
               inputRef={inputRef}
               onChangeText={onChangeTextCallback}
+              loading={submitLoading}
               onSubmit={onSubmitCallback}
             />
           </Animated.View>
@@ -248,11 +257,13 @@ type FeedbackFormProps = {
   inputRef: any;
   onChangeText: (text: string) => void;
   onSubmit: () => void;
+  loading: boolean;
 };
 const FeedbackForm = ({
   inputRef,
   onChangeText,
   onSubmit,
+  loading,
 }: FeedbackFormProps) => (
   <View style={styles.submitFormContainer}>
     <View style={styles.textInputContainer}>
@@ -268,7 +279,11 @@ const FeedbackForm = ({
         onChangeText={onChangeText}
       />
     </View>
-    <TouchableOpacity style={styles.submitButton} onPress={onSubmit}>
+    <TouchableOpacity
+      style={styles.submitButton}
+      onPress={onSubmit}
+      disabled={loading}
+    >
       <Text style={styles.submitButtonText}>Submit Feedback</Text>
     </TouchableOpacity>
   </View>

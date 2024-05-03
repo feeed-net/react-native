@@ -1,20 +1,24 @@
-# @feeed/react-native
+# Feeed React Native Widget
 
-A package
+Used to collect feedback from your users and send it to your Feeed dashboard.
 
-## Installation
+### Usage with Expo
 
-1. Install the package:
+Install following expo dependencies:
 
-```sh
-yarn install @feeed/react-native
+```bash
+expo install @feeed/react-native react-native-gesture-handler react-native-reanimated react-native-safe-area-context expo-device expo-constants
 ```
 
-2. Install the dependencies:
+### Usage with React Native
 
-```sh
-yarn add react-native-gesture-handler react-native-reanimated react-native-safe-area-context
+Install following dependencies:
+
+```bash
+yarn add @feeed/react-native react-native-gesture-handler react-native-reanimated react-native-safe-area-context react-native-device-info
 ```
+
+Please follow the official documentation of those libraries on how to link them correctly.
 
 ## Usage
 
