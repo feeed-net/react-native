@@ -11,7 +11,6 @@ export const useFeedbackSubmit = (): UseFeedbackSubmitResult => {
 
   const submitFeedback = async (options: UseFeedbackSubmitOptions) => {
     setLoading(true);
-    setTimeout(() => {}, 5000);
     try {
       const res = await fetch('https://submit.feeed.net', {
         method: 'POST',
