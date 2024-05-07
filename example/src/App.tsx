@@ -13,7 +13,10 @@ export default function App() {
     <SafeAreaProvider>
       <FeedbackWidgetProvider>
         <AppContent />
-        <FeedbackWidget projectId="JGGHcdanxJNq" />
+        <FeedbackWidget
+          projectId="JGGHcdanxJNq"
+          // widgetContainerStyle={styles.widgetContainer}
+        />
       </FeedbackWidgetProvider>
     </SafeAreaProvider>
   );
@@ -39,5 +42,9 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     marginVertical: 20,
+  },
+  widgetContainer: {
+    backgroundColor: 'blue',
+    borderRadius: 10,
   },
 });

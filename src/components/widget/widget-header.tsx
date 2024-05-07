@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
-import type { FeedbackWidgetStep } from '../core/types';
-import CloseIcon from './icons/close-icon';
+import type { FeedbackWidgetStep } from '../../core/types';
+import CloseIcon from '../icons/close-icon';
 
 type WidgetHeaderProps = {
   title: string;

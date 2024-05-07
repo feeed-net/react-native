@@ -2,7 +2,7 @@ import React from 'react';
 import { useState } from 'react';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { FeedbackWidgetContext } from '../context';
+import { FeedbackWidgetContext } from '../../context';
 import { StyleSheet } from 'react-native';
 
 type FeedbackWidgetProviderProps = {
