@@ -1,8 +1,8 @@
-import { isExpoGo } from '../constants';
+import { isExpo } from '../constants';
 
 let deviceInfo;
 
-if (isExpoGo) {
+if (isExpo) {
   const { getDeviceInfo } = require('./expo');
   deviceInfo = getDeviceInfo;
 } else {

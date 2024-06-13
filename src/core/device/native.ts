@@ -1,5 +1,7 @@
 import { Platform } from 'react-native';
+
 let DeviceInfo: any;
+
 try {
   DeviceInfo = require('react-native-device-info');
 } catch (error) {
