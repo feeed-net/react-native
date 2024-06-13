@@ -7,7 +7,7 @@ Used to collect feedback from your users and send it to your Feeed dashboard.
 Install following expo dependencies:
 
 ```bash
-expo install @feeed/react-native react-native-gesture-handler react-native-reanimated react-native-safe-area-context expo-device expo-constants
+expo install @feeed/react-native react-native-gesture-handler react-native-reanimated react-native-safe-area-context expo-device expo-constants expo-application
 ```
 
 ### Usage with React Native
