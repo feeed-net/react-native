@@ -104,10 +104,10 @@
     "expo-device": {
       "optional": true
     },
-    "react-native-device-info": {
+    "expo-constants": {
       "optional": true
     },
-    "expo-constants": {
+    "react-native-device-info": {
       "optional": true
     }
   },

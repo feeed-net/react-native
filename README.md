@@ -23,6 +23,9 @@ Please follow the official documentation of those libraries on how to link them 
 ## Usage
 
 ```js
+import { FeedbackWidgetProvider, FeedbackWidget } from '@feeed/react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+
 <SafeAreaProvider>
   <FeedbackWidgetProvider>
     /* Your app content */
