@@ -7,12 +7,19 @@ export type FeedbackWidgetStep = 'main' | 'write' | 'success';
 
 export type FeedbackCategory = 'bug' | 'other' | string;
 
-export type UseFeedbackSubmitOptions = {
+export type FeedbackSubmitParams = {
   projectId: string;
   category: string;
   content: string;
   metadata: Metadata;
+  user?: User;
 };
+
+export type User = {
+  id?: string;
+  email?: string;
+};
+
 export type Metadata = {
   os: {
     name: string;

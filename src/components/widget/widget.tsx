@@ -1,11 +1,6 @@
 import React, { useContext } from 'react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import {
-  StyleSheet,
-  Keyboard,
-  type StyleProp,
-  type ViewStyle,
-} from 'react-native';
+import { StyleSheet, Keyboard } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import {
   BottomSheetBackdrop,
@@ -15,10 +10,14 @@ import {
 } from '@gorhom/bottom-sheet';
 
 import Animated, { withTiming } from 'react-native-reanimated';
-import type { FeedbackCategory, FeedbackWidgetStep } from '../../core/types';
+import type {
+  FeedbackCategory,
+  FeedbackWidgetStep,
+  User,
+} from '../../core/types';
 import WidgetHeader from './widget-header';
 import { FeedbackWidgetContext } from '../../context';
-import { useFeedbackSubmit } from '../../hooks/useSubmitFeedback';
+import { useSubmitFeedback } from '../../hooks/useSubmitFeedback';
 import { getDeviceInfo } from '../../core/device';
 import CategoryList from './category-list';
 import FeedbackForm from './feedback-form';
@@ -30,7 +29,7 @@ type FeedbackWidgetProps = {
   onClose?: () => void;
   projectId: string;
   title?: string;
-  widgetContainerStyle?: StyleProp<ViewStyle>;
+  user?: User;
 };
 
 const FeedbackWidget = ({
@@ -39,13 +38,13 @@ const FeedbackWidget = ({
   onClose,
   projectId,
   title = 'How can we help?',
-  widgetContainerStyle,
+  user,
 }: FeedbackWidgetProps) => {
   const ref = useRef<any>(null);
   const safeAreaInsets = useSafeAreaInsets();
-  const { submitFeedback, loading: submitLoading } = useFeedbackSubmit();
+  const { submitFeedback, loading: submitLoading } = useSubmitFeedback();
   const safeBottomInset = useMemo(
-    () => safeAreaInsets.bottom + 8,
+    () => safeAreaInsets.bottom - 16,
     [safeAreaInsets]
   );
   const { isOpen, setOpen } = useContext(FeedbackWidgetContext);
@@ -113,18 +112,18 @@ const FeedbackWidget = ({
       return;
     }
     try {
-      console.log('Submitting feedback', await getDeviceInfo());
       await submitFeedback({
         projectId,
         category: currentCategory,
         content: currentText,
         metadata: await getDeviceInfo(),
+        user: user ? user : undefined,
       });
       setCurrentStep('success');
     } catch (error) {
-      console.error(error);
+      throw error;
     }
-  }, [projectId, currentText, currentCategory, submitFeedback]);
+  }, [projectId, currentText, currentCategory, submitFeedback, user]);
 
   const entering: any = useCallback(() => {
     'worklet';
@@ -173,7 +172,7 @@ const FeedbackWidget = ({
       enableDynamicSizing
       handleComponent={() => null}
       style={styles.modal}
-      backgroundStyle={[styles.background, widgetContainerStyle]}
+      backgroundStyle={[styles.background]}
     >
       <BottomSheetView style={[styles.container]}>
         <WidgetHeader
@@ -209,6 +208,7 @@ const FeedbackWidget = ({
 const styles = StyleSheet.create({
   modal: {
     marginHorizontal: 16,
+    marginTop: -16,
   },
   container: {
     padding: 24,
