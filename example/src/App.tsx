@@ -13,10 +13,7 @@ export default function App() {
     <SafeAreaProvider>
       <FeedbackWidgetProvider>
         <AppContent />
-        <FeedbackWidget
-          projectId="JGGHcdanxJNq"
-          // widgetContainerStyle={styles.widgetContainer}
-        />
+        <FeedbackWidget projectId="upDiUIutVasT" />
       </FeedbackWidgetProvider>
     </SafeAreaProvider>
   );
