@@ -30,6 +30,7 @@ type FeedbackWidgetProps = {
   projectId: string;
   title?: string;
   user?: User;
+  apiUrl?: string;
 };
 
 const FeedbackWidget = ({
@@ -39,10 +40,13 @@ const FeedbackWidget = ({
   projectId,
   title = 'How can we help?',
   user,
+  apiUrl,
 }: FeedbackWidgetProps) => {
   const ref = useRef<any>(null);
   const safeAreaInsets = useSafeAreaInsets();
-  const { submitFeedback, loading: submitLoading } = useSubmitFeedback();
+  const { submitFeedback, loading: submitLoading } = useSubmitFeedback({
+    apiUrl,
+  });
   const safeBottomInset = useMemo(
     () => safeAreaInsets.bottom - 16,
     [safeAreaInsets]

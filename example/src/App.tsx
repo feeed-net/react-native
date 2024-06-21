@@ -13,7 +13,11 @@ export default function App() {
     <SafeAreaProvider>
       <FeedbackWidgetProvider>
         <AppContent />
-        <FeedbackWidget projectId="upDiUIutVasT" />
+        <FeedbackWidget
+          projectId="upDiUIutVasT"
+          user={{ email: 'me@lauriskern.com', id: 'C98acsbiu12' }}
+          apiUrl="https://api-dev.feeed.net/feedback/submit"
+        />
       </FeedbackWidgetProvider>
     </SafeAreaProvider>
   );

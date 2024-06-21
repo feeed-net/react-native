@@ -1,10 +1,12 @@
 let Device: any;
+
 try {
   Device = require('expo-device');
 } catch (error) {
   console.warn('Optional module expo-device is not available.');
 }
 let Application: any;
+
 try {
   Application = require('expo-application');
 } catch (error) {
